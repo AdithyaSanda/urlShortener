@@ -3,12 +3,16 @@ import mongoose from "../config/db.js"
 const urlModel = new mongoose.Schema({
     originalUrl: {
         type: String,
-        required
+        required: true
     },
     shortCode: {
         type: String,
-        required,
+        required: true,
         unique: true
+    },
+    clicks: {
+        type: Number,
+        default: 0
     },
     createdAt: {
         type: Date,

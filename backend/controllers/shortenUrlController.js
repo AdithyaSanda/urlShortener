@@ -1,13 +1,20 @@
-import generateCode from "../utils/generateCode.js"
+import shortenUrl from "../services/shortenUrl.js"
 
-const shortenUrlController =  (req, res) => {
+const shortenUrlController =  async (req, res) => {
     try {
-        const originalUrl = req.body
+        const {originalUrl} = req.body
 
-        const shortCode = generateCode(originalUrl)
+        try {
+            new URL(originalUrl)
+        }
+        catch(err) {
+            return res.status(400).json({message: "Invalid URL"})
+        }
+
+        const shortCode = await shortenUrl(originalUrl)
 
         res.status(201).json({
-            shortUrl: `http://localhost:5000/${shortCode}`
+            shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`
         })
     }
     catch(err) {
