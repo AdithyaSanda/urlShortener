@@ -9,6 +9,7 @@ import verifyJWT from "./middleware/verifyJWT.js"
 import getUrlsRoute from "./routes/getUrlRoute.js"
 import deleteUrlRoute from "./routes/deleteUrlRoute.js"
 import getAnalyticsRoute from "./routes/getAnalyticsRoute.js"
+import rateLimiter from "./middleware/rateLimiter.js"
 import cookieParser from "cookie-parser"
 
 const app = express()
@@ -17,19 +18,23 @@ app.use(cookieParser())
 
 connectDB()
 
+
+
+
+
 app.use("/user", authRoute)
 app.use('/logout', logoutRoute)
 app.use('/refresh', refreshRoute)
 
-
+app.use("/api", rateLimiter)
 
 app.use("/api/shorten", verifyJWT, shortenUrlRoute)
-app.use("/geturls", verifyJWT, getUrlsRoute)
-app.use("/deleteUrl", verifyJWT, deleteUrlRoute)
-app.use("/getAnalytics", verifyJWT, getAnalyticsRoute)
+app.use("/api/geturls", verifyJWT, getUrlsRoute)
+app.use("/api/deleteUrl", verifyJWT, deleteUrlRoute)
+app.use("/api/getAnalytics", verifyJWT, getAnalyticsRoute)
+
 
 app.use("/", getOriginalUrlRoute)
-
 
 
 
