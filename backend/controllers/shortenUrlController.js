@@ -11,12 +11,11 @@ const shortenUrlController =  async (req, res) => {
             return res.status(400).json({message: "Invalid URL"})
         }
 
-        const userId = req.user
-        console.log(req.user)
-        const shortCode = await shortenUrl(originalUrl, req.user)
+        const newUrl = await shortenUrl(originalUrl, req.user)
 
         res.status(201).json({
-            shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`
+            shortUrl: `${req.protocol}://${req.get("host")}/${newUrl.shortCode}`,
+            newUrl
         })
     }
     catch(err) {

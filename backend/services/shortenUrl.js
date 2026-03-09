@@ -10,7 +10,7 @@ const shortenUrl = async (originalUrl, userId) => {
         userId
     })
     
-    return shortCode
+    return newUrl
 }
 
 export default shortenUrl
