@@ -3,6 +3,6 @@ import deleteUrlController from "../controllers/deleteUrlController.js"
 
 const router = express.Router()
 
-router.delete("/", deleteUrlController)
+router.delete("/:id", deleteUrlController)
 
 export default router

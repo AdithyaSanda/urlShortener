@@ -8,6 +8,7 @@ import logoutRoute from "./routes/logoutRoute.js"
 import verifyJWT from "./middleware/verifyJWT.js"
 import getUrlsRoute from "./routes/getUrlRoute.js"
 import deleteUrlRoute from "./routes/deleteUrlRoute.js"
+import getAnalyticsRoute from "./routes/getAnalyticsRoute.js"
 import cookieParser from "cookie-parser"
 
 const app = express()
@@ -24,8 +25,8 @@ app.use('/refresh', refreshRoute)
 
 app.use("/api/shorten", verifyJWT, shortenUrlRoute)
 app.use("/geturls", verifyJWT, getUrlsRoute)
-app.use("/deleteUrl/:id", verifyJWT, deleteUrlRoute)
-
+app.use("/deleteUrl", verifyJWT, deleteUrlRoute)
+app.use("/getAnalytics", verifyJWT, getAnalyticsRoute)
 
 app.use("/", getOriginalUrlRoute)
 

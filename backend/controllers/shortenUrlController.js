@@ -13,6 +13,10 @@ const shortenUrlController =  async (req, res) => {
 
         const newUrl = await shortenUrl(originalUrl, req.user)
 
+        if(newUrl === "exists") {
+            return res.json("url already exists")
+        }
+
         res.status(201).json({
             shortUrl: `${req.protocol}://${req.get("host")}/${newUrl.shortCode}`,
             newUrl
