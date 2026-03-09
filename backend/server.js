@@ -2,14 +2,27 @@ import express from "express"
 import { connectDB } from "./config/db.js"
 import shortenUrlRoute from "./routes/shortenUrlRoute.js"
 import getOriginalUrlRoute from "./routes/getOriginalUrlRoute.js"
+import authRoute from "./routes/authRoutes.js"
+import refreshRoute from "./routes/refreshRoute.js"
+import logoutRoute from "./routes/logoutRoute.js"
+import verifyJWT from "./middleware/verifyJWT.js"
+import getUrlsRoute from "./routes/getUrlRoute.js"
+import cookieParser from "cookie-parser"
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 
 connectDB()
 
-app.use("/api/shorten", shortenUrlRoute)
+app.use("/api/shorten", verifyJWT, shortenUrlRoute)
+app.use("/getUrls", verifyJWT, getUrlsRoute)
+app.use('/refresh', refreshRoute)
+app.use('/logout', logoutRoute)
 app.use("/", getOriginalUrlRoute)
+app.use("/user", authRoute)
+
+
 
 app.listen(5000, () => {
     console.log("server running on port 5000")
