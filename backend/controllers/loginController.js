@@ -10,13 +10,13 @@ const loginController = async (req, res) => {
         const {email, password} = req.body
 
         if(!email || !password) {
-            return res.json(400).json({error: 'All fields are required'})
+            return res.status(400).json({error: 'All fields are required'})
         }
 
         const user = await UserModel.findOne({email})
 
         if(!user) {
-            return res.json(400).json({error: "User not found"})
+            return res.status(400).json({error: "User not found"})
         }
 
         const match = await bcrypt.compare(password, user.password)
@@ -26,7 +26,7 @@ const loginController = async (req, res) => {
             const refreshToken = jwt.sign({"username": user.name, "userId": user._id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "1d"})
             user.refreshToken = refreshToken
             await user.save()
-            res.cookie('jwt', refreshToken, {httpOnly: true, sameSite: 'None', secure: true, maxAge: 24*60*60*1000})
+            res.cookie('jwt', refreshToken, {httpOnly: true, sameSite: 'lax', secure: false, maxAge: 24*60*60*1000})
             return res.json({accessToken})
         }
         else {

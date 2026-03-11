@@ -5,11 +5,8 @@ const getOriginalUrl = async (shortCode) => {
     if(!url) {
         return null
     }
-
-    url.clicks++
-    await url.save()
     
-    return url.originalUrl
+    return url
 }
 
 export default getOriginalUrl

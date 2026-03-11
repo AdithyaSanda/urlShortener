@@ -7,7 +7,6 @@ dotenv.config()
 const refreshController = async (req, res) => {
     try {
         const cookies = req.cookies
-        
         if(!cookies?.jwt) return res.sendStatus(401)
        
         const refreshToken = cookies.jwt
@@ -28,6 +27,7 @@ const refreshController = async (req, res) => {
         
     }
     catch(err) {
+        console.log(err.message)
         res.status(401).json(err.message)
     }
 }

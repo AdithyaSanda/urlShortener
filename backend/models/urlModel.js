@@ -5,6 +5,9 @@ const urlModel = new mongoose.Schema({
         type: String,
         required: true
     },
+    shortUrl: {
+        type: String,
+    },
     shortCode: {
         type: String,
         required: true,

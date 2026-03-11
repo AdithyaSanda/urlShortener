@@ -17,6 +17,8 @@ const shortenUrlController =  async (req, res) => {
             return res.json("url already exists")
         }
 
+        newUrl.shortUrl = `${req.protocol}://${req.get("host")}/${newUrl.shortCode}`
+        await newUrl.save()
         res.status(201).json({
             shortUrl: `${req.protocol}://${req.get("host")}/${newUrl.shortCode}`,
             newUrl

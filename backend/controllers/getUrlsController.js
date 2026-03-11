@@ -4,7 +4,7 @@ const getUrlsController = async (req, res) => {
     try {
         const userId = req.user
 
-        const urls = await urlModel.find({userId})
+        const urls = await urlModel.find({userId}).sort({createdAt: -1})
 
         res.json(urls)
     }

@@ -19,6 +19,9 @@ const user = new mongoose.Schema({
     refreshToken: {
         type: String
     },
+    profilePic: {
+        type: String
+    }
 })
 
 export default mongoose.model("user", user)

@@ -1,5 +1,6 @@
 import getOriginalUrl from "../services/getOriginalUrl.js";
 import redisClient from "../config/redis.js";
+import urlModel from "../models/urlModel.js";
 
 const getOriginalUrlController = async (req, res) => {
     try {
@@ -8,18 +9,24 @@ const getOriginalUrlController = async (req, res) => {
         const cachedUrl = await redisClient.get(shortCode)
 
         if(cachedUrl) {
+            await urlModel.findOneAndUpdate(
+                {shortCode},
+                {$inc: {clicks: 1}}
+            )
             return res.redirect(cachedUrl)
         }
 
-        const originalUrl = await getOriginalUrl(shortCode)
+        const url = await getOriginalUrl(shortCode)
         res.set("Cache-Control", "no-store")
 
-        await redisClient.set(shortCode, originalUrl)
+        url.clicks += 1
+        await url.save()
+        await redisClient.set(shortCode, url.originalUrl)
 
-        res.redirect(302, originalUrl)
+        res.redirect(302, url.originalUrl)
     }
     catch(err) {
-        res.status(404).json({error: err.message})
+        res.status(401).json({error: err.message})
     }
 }
 
